@@ -30,6 +30,26 @@
 		<div class="buttonArea">
 			<button @click="saveUser">ユーザーを登録する</button>
 		</div>
+
+		<div class="filterArea">
+			<label>絞り込む</label>
+			<input v-model="nicknameFilter">
+		</div>
+
+		<div>
+			<table>
+				<thead>
+					<th>ニックネーム</th>
+					<th>メールアドレス</th>
+				</thead>
+				<tbody>
+					<tr v-for="user in filteredUsers">
+						<td>{{ user.nickname }}</td>
+						<td>{{ user.email }}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
 	</div>
 
 	<script src="https://cdn.jsdelivr.net/npm/vue@3.0.0/dist/vue.global.js"></script>
@@ -41,6 +61,7 @@
 						users: [],
 						nickname: "test",
 						email: "email",
+						nicknameFilter: "",
 					}
 				)
 			},
@@ -52,6 +73,11 @@
 					};
 					this.users.push(user);
 					alert('ニックネーム: ' + this.nickname + ', メールアドレス: ' + this.email + 'で登録しました。' )
+				}
+			},
+			computed: {
+				filteredUsers: function() {
+					return this.users.filter(user => user.nickname.includes(this.nicknameFilter))
 				}
 			}
 		}).mount("#app")
