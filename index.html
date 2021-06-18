@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="./style.css">
+	<title>Document</title>
+</head>
+<body>
+	<div id="app"	>
+		<div class="input-container">
+			<form class="inputArea">
+				<p>ユーザ登録</p>
+				<label>ニックネーム</label>
+				<input v-model="nickname">
+				<label>メールアドレス</label>
+				<input v-model="email">
+			</form>
+		</div>
+
+		<div class="prevewArea">
+			<p>プレビュー</p>
+			<label>ニックネーム</label>
+			<input v-bind:value="nickname" readonly>
+			<label>メールアドレス</label>
+			<input v-bind:value="email" readonly>
+		</div>
+
+		<div class="buttonArea">
+			<button @click="saveUser">ユーザーを登録する</button>
+		</div>
+	</div>
+
+	<script src="https://cdn.jsdelivr.net/npm/vue@3.0.0/dist/vue.global.js"></script>
+	<script>
+		Vue.createApp({
+			data: function () {
+				return (
+					{
+						users: [],
+						nickname: "test",
+						email: "email",
+					}
+				)
+			},
+			methods: {
+				saveUser: function() {
+					let user = {
+						nickname: this.nickname,
+						email: this.email
+					};
+					this.users.push(user);
+					alert('ニックネーム: ' + this.nickname + ', メールアドレス: ' + this.email + 'で登録しました。' )
+				}
+			}
+		}).mount("#app")
+	</script>
+</body>
+</html>
