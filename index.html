@@ -31,35 +31,23 @@
 			<button @click="saveUser">ユーザーを登録する</button>
 		</div>
 
-		<div class="filterArea">
-			<label>絞り込む</label>
-			<input v-model="nicknameFilter">
-		</div>
-
 		<div>
+			<div class="filterArea">
+				<label>絞り込む</label>
+				<input v-model="nicknameFilter">
+			</div>
 			<table>
 				<thead>
 					<th>ニックネーム</th>
 					<th>メールアドレス</th>
 				</thead>
 				<tbody>
-					<tr v-for="(user, index) in filteredUsers">
-						<td>
-							<span
-								v-if="!user.editable"
-								@click="edit(user, index)"
-							>
-								{{ user.nickname }}
-							</span>
-							<input
-								v-show="user.editable"
-								v-model="user.nickname"
-								@blur="user.editable = false"
-								ref="editNickname"
-							>
-						</td>
-						<td>{{ user.email }}</td>
-					</tr>
+					<tr 
+						v-is="'user-row'"
+						v-for="(user, index) in filteredUsers"
+						:user="user"
+						:key="index"
+					>
 				</tbody>
 			</table>
 
@@ -72,7 +60,32 @@
 
 	<script src="https://cdn.jsdelivr.net/npm/vue@3.0.0/dist/vue.global.js"></script>
 	<script>
+		const userRowComponent = Vue.defineComponent({
+			data: function() { return { editable: false } },
+			methods: {
+				edit: function() {
+					this.editable = true;
+					this.$nextTick(() => {
+						this.$refs.editNickname.focus();
+					})
+				},
+			},
+			template:
+				`
+					<tr>
+						<td>
+							<span v-if="!editable" @click="edit()">{{ user.nickname }}</span>
+							<input v-show="editable" v-model="user.nickname" @blur="editable = false" ref="editNickname">
+						</td>
+						<td>{{ user.email }}</td>
+					</tr>
+				`,
+			props: ["user"]
+		})
 		Vue.createApp({
+			components: {
+				'user-row': userRowComponent
+			},
 			data: function () {
 				return (
 					{
@@ -96,12 +109,6 @@
 					};
 					this.users.push(user);
 					alert('ニックネーム: ' + this.nickname + ', メールアドレス: ' + this.email + 'で登録しました。' )
-				},
-				edit: function(user, index) {
-					user.editable = true;
-					this.$nextTick(() => {
-						this.$refs.editNickname.focus();
-					})
 				},
 				displayUsers: function() {
 					let message = this.users.length + '人のユーザーが登録されています。';
