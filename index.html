@@ -43,12 +43,30 @@
 					<th>メールアドレス</th>
 				</thead>
 				<tbody>
-					<tr v-for="user in filteredUsers">
-						<td>{{ user.nickname }}</td>
+					<tr v-for="(user, index) in filteredUsers">
+						<td>
+							<span
+								v-if="!user.editable"
+								@click="edit(user, index)"
+							>
+								{{ user.nickname }}
+							</span>
+							<input
+								v-show="user.editable"
+								v-model="user.nickname"
+								@blur="user.editable = false"
+								ref="editNickname"
+							>
+						</td>
 						<td>{{ user.email }}</td>
 					</tr>
 				</tbody>
 			</table>
+
+			<div class="buttonWrapper">
+				<button @click="displayUsers">ユーザーを表示する</button>
+			</div>
+
 		</div>
 	</div>
 
@@ -58,7 +76,11 @@
 			data: function () {
 				return (
 					{
-						users: [],
+						users: [
+							{ nickname: "kento", email: "kento@email" },
+							{ nickname: "mike", email: "mike@email" },
+							{ nickname: "hikari", email: "hikari@email" }
+						],
 						nickname: "test",
 						email: "email",
 						nicknameFilter: "",
@@ -69,10 +91,24 @@
 				saveUser: function() {
 					let user = {
 						nickname: this.nickname,
-						email: this.email
+						email: this.email,
+						editable: false,
 					};
 					this.users.push(user);
 					alert('ニックネーム: ' + this.nickname + ', メールアドレス: ' + this.email + 'で登録しました。' )
+				},
+				edit: function(user, index) {
+					user.editable = true;
+					this.$nextTick(() => {
+						this.$refs.editNickname.focus();
+					})
+				},
+				displayUsers: function() {
+					let message = this.users.length + '人のユーザーが登録されています。';
+					for (const user of this.users) {
+						message += '\n' + user.nickname
+					}
+					window.alert(message)
 				}
 			},
 			computed: {
