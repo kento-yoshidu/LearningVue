@@ -30,17 +30,73 @@
 		<div class="buttonArea">
 			<button @click="saveUser">ユーザーを登録する</button>
 		</div>
+
+		<div>
+			<div class="filterArea">
+				<label>絞り込む</label>
+				<input v-model="nicknameFilter">
+			</div>
+			<table>
+				<thead>
+					<th>ニックネーム</th>
+					<th>メールアドレス</th>
+				</thead>
+				<tbody>
+					<tr 
+						v-is="'user-row'"
+						v-for="(user, index) in filteredUsers"
+						:user="user"
+						:key="index"
+					>
+				</tbody>
+			</table>
+
+			<div class="buttonWrapper">
+				<button @click="displayUsers">ユーザーを表示する</button>
+			</div>
+
+		</div>
 	</div>
 
 	<script src="https://cdn.jsdelivr.net/npm/vue@3.0.0/dist/vue.global.js"></script>
 	<script>
+		const userRowComponent = Vue.defineComponent({
+			data: function() { return { editable: false } },
+			methods: {
+				edit: function() {
+					this.editable = true;
+					this.$nextTick(() => {
+						this.$refs.editNickname.focus();
+					})
+				},
+			},
+			template:
+				`
+					<tr>
+						<td>
+							<span v-if="!editable" @click="edit()">{{ user.nickname }}</span>
+							<input v-show="editable" v-model="user.nickname" @blur="editable = false" ref="editNickname">
+						</td>
+						<td>{{ user.email }}</td>
+					</tr>
+				`,
+			props: ["user"]
+		})
 		Vue.createApp({
+			components: {
+				'user-row': userRowComponent
+			},
 			data: function () {
 				return (
 					{
-						users: [],
+						users: [
+							{ nickname: "kento", email: "kento@email" },
+							{ nickname: "mike", email: "mike@email" },
+							{ nickname: "hikari", email: "hikari@email" }
+						],
 						nickname: "test",
 						email: "email",
+						nicknameFilter: "",
 					}
 				)
 			},
@@ -48,10 +104,23 @@
 				saveUser: function() {
 					let user = {
 						nickname: this.nickname,
-						email: this.email
+						email: this.email,
+						editable: false,
 					};
 					this.users.push(user);
 					alert('ニックネーム: ' + this.nickname + ', メールアドレス: ' + this.email + 'で登録しました。' )
+				},
+				displayUsers: function() {
+					let message = this.users.length + '人のユーザーが登録されています。';
+					for (const user of this.users) {
+						message += '\n' + user.nickname
+					}
+					window.alert(message)
+				}
+			},
+			computed: {
+				filteredUsers: function() {
+					return this.users.filter(user => user.nickname.includes(this.nicknameFilter))
 				}
 			}
 		}).mount("#app")
