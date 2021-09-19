@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script src="https://unpkg.com/vue@next"></script>
+	<title>04</title>
+</head>
+<body>
+	<div id="app">
+		<div class="new-todo">
+			<div class="new-todo-item">
+				<label for="new-todo-title">タイトル</label>
+				<input v-model="todoTitle" type="text" id="new-todo-title" />
+			</div>
+
+			<div class="new-todo-item">
+				<label for="new-todo-description">説明</label>
+				<textarea v-model="todoDescription" id="new-todo-description"></textarea>
+			</div>
+		</div>
+
+		<div>
+			<div class="todo-search">
+				<div class="todo-search-item">
+					<label for="todo-searchkeyword">キーワードで検索</label>
+					<input type="text" v-model="searchWord" id="todo-search-keyword" />
+				</div>
+			</div>
+		</div>
+	</div>
+	<script src="script.js"	></script>
+</body>
+</html>
