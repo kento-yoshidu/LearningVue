@@ -3,8 +3,6 @@ Vue.createApp({
 		return {
 			todoTitle: "aaa",
 			todoDescription: "bbb",
-			todoCategories: [],
-			hideDoneTodo: false,
 			searchWord: "ccc",
 		}
 	}
