@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<Link href="./style.css" rel="stylesheet">
+	<script src="https://unpkg.com/vue@next"></script>
+	<title>05</title>
+</head>
+<body>
+	<div id="app">
+		<input
+			type="checkbox"
+			id="cate1"
+			v-model="todoCategory"
+			value="value1"
+		/>
+		<label for="cate1">Cate1</label>
+
+		<input
+			type="checkbox"
+			id="cate2"
+			v-model="todoCategory"
+			value="value2"
+		/>
+		<label for="cate2">Cate2</label>
+
+		<input
+			type="checkbox"
+			id="cate3"
+			v-model="todoCategory"
+			value="value3"
+		/>
+		<label for="cate3">Cate3</label>
+
+		<p>{{ todoCategory }}</p>
+	</div>
+	<script src="sample.js"	></script>
+</body>
+</html>
